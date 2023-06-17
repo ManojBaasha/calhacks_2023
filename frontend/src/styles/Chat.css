@@ -1,0 +1,10 @@
+.outercontainer {
+    display: flex;
+    width: 100%;
+    height: 94vh;
+    border: black solid 5px;
+}
+
+.leftbox{
+    
+}

@@ -1,0 +1,94 @@
+/* .auth {
+    text-align: center;
+}
+
+.auth button {
+    width: 200px;
+    height: 50px;
+    border: none;
+    background-color: #3b5998;
+    color: white;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+} */
+
+
+.qualtrics-survey-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #qualtrics-survey {
+    width: 800px; /* Adjust the width as needed */
+    height: 600px; /* Adjust the height as needed */
+  }
+  
+  .bigbox{
+    padding-top: 10vh;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+
+  .box1{
+    width: 80%;
+    font-size: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    white-space: pre-wrap;
+  }
+
+  .box2{
+    width: 80%;
+    font-size: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* include whitespace */
+    white-space: pre-wrap;
+  }
+
+  .box3{
+    width: 80%;
+    font-size: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* include whitespace */
+    white-space: pre-wrap;
+  }
+
+  .images{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .StartText{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    border: black 5px solid;
+  }
+
+  .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
