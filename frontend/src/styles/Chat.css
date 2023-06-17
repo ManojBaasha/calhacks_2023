@@ -2,6 +2,7 @@
     height: 70%;
     position: relative;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .half-card-image {
@@ -11,4 +12,22 @@
     height: 100%;
     width: 100%;
     object-fit: contain;
+}
+
+.scrollable-text-inside {
+    height: 100px;  
+    width: 550px;
+    overflow-y: auto; 
+}
+
+.scrollable-text-left {
+    height: 570px;  
+    width: 320px;
+    overflow-y: auto; 
+}
+
+.scrollable-text-bottom {
+    height: 50px;  
+    width: 1450px;
+    overflow-y: auto; 
 }
