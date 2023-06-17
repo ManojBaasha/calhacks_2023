@@ -3,7 +3,7 @@ import microphone from './resources/microphone-icon.svg';
 import lady from './resources/interviewer.jpg';
 import useSpeechToText from 'react-hook-speech-to-text'; 
 import { useEffect } from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 
 export default function AnyComponent() {
   const {
@@ -18,21 +18,21 @@ export default function AnyComponent() {
     useLegacyResults: false
   });
 
-  // const handleSubmit = async (concatenatedResults) => {
-  //   try {
-  //     const response = await axios.post('/process-string', { data: concatenatedResults });
-  //     console.log(response.data);  // Handle the response from the server
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleSubmit = async (concatenatedResults) => {
+    try {
+      const response = await axios.post('/process-string', { data: concatenatedResults });
+      console.log(response.data);  // Handle the response from the server
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     let concatenatedResults = ""; // Initialize an empty string to hold the concatenated results
     results.forEach((result) => {
       concatenatedResults += `${result.transcript}. `; // Concatenate the `transcript` property
     });
-    // handleSubmit(concatenatedResults);
+    handleSubmit(concatenatedResults);
     console.log(concatenatedResults);
   }, [isRecording]);
   // const handleStop = () => {
