@@ -8,6 +8,13 @@ import openai
 import re
 from colorama import Fore, Style
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load variables from .env file
+
+openai.api_key = os.getenv("OPEN-AI-API")
+hume_ai_api = os.getenv("HUME-AI-API")
 
 app = Flask(__name__, static_folder='../frontend/reactApp/build')
 CORS(app)
@@ -154,7 +161,7 @@ def process_string():
     async def process_emotions():
         try:
             # print("This is the string we got:", received_string)
-            client = HumeStreamClient("h0BIQIKbPwM5vuaKIiDKsZ6yz4QVVqDFHccGLqYRgpklON2E")
+            client = HumeStreamClient(hume_ai_api)
             config = LanguageConfig()
             async with client.connect([config]) as socket:
                 result = await socket.send_text(data)
