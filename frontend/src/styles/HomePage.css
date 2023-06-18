@@ -1,6 +1,6 @@
 .jumbotron {
   position: relative;
-  background-image: url('../assets/office.jpeg');
+  background-image: url('../assets/officeSpace2large.jpg');
   background-size: cover;
   background-position: center 42%;
   height: 40vh;
@@ -14,6 +14,7 @@
   text-align: center;
   color: #000000;
   font-weight: bold;
+  text-shadow: 2px 2px 4px #ffffff;
 }
 
 .button {
@@ -32,9 +33,9 @@
 }
 
 .app-header h1 {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   padding-bottom: 20px;
   padding-top: 20px;
+  text-shadow: 2px 2px 4px #ffffff;
 }
 
 .container h2 {
@@ -50,4 +51,9 @@
   padding: 10px;
   font-weight: bold;
   text-align: center;
+}
+
+.logo {
+  width: 200px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
 }
