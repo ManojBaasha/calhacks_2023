@@ -26,8 +26,12 @@
     overflow-y: auto; 
 }
 
-.scrollable-text-bottom {
+.bottom-box {
     height: 50px;  
     width: 1450px;
     overflow-y: auto; 
 }
+
+.btn-margin-left {
+    margin-left: 10px;
+  }

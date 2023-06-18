@@ -80,12 +80,29 @@ export const Chat = ({ room }) => {
       </div>
       <div className="row flex-grow-4 mt-3 pb-3">
         <div className="col">
+
           <div className="card bg-light p-3 h-100">
-            <div className="scrollable-text-bottom">
-              <p className="card-text">Etiam vitae velit quis mi luctus laoreet vel eget dui. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Sed tincidunt sed arcu nec rhoncus. Curabitur eget purus enim. Proin commodo orci id sollicitudin accumsan. Integer a maximus purus. Sed ullamcorper dapibus neque, imperdiet lobortis nunc interdum id. Morbi id lacus vitae sapien abe mollis pellentesque. Curabitur at tellus dapibus, pretium felis et, sagittis mauris. Integer id tortor suscipit, ullamcorper ligula vitae, ornare turpis. Morbi eu dui eu massa faucibus blandit. Etiam a ullamcorper urna.
-              </p>
+
+            <div className="bottom-box d-flex justify-content-between p-1 ">
+              <div className="d-flex justify-content-between">
+                <div><a className="btn btn-secondary" href="#" role="button">&lt;&lt; Previous Question</a></div>
+                <div className="btn-margin-left"><a className="btn btn-secondary" href="#" role="button" >Next Question &gt;&gt;</a></div>
+              </div>
+              <div>
+                <a className="btn btn-secondary" href="#" role="button">Repeat Response</a>
+              </div>
+              <div>
+                <a className="btn btn-secondary" href="#" role="button">Return Home</a>
+              </div>
+              <div>
+                <a className="btn btn-secondary" href="#" role="button">Blank 1</a>
+              </div>
+              <div>
+                <a className="btn btn-secondary" href="#" role="button">Blank 2</a>
+              </div>
             </div>
           </div>
+
 
         </div>
       </div>
