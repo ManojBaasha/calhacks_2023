@@ -1,6 +1,8 @@
 import "../styles/HomePage.css";
 import FeaturesSection from "./FeatureSection";
 import CardSection from "./CardSection";
+import TopNavBar from "./TopBar";
+import synthiaLogo from '../assets/synthiaLogo.png';
 
 const HomePage = ({ setIsAuth }) => {
   const handleRedirect = () => {
@@ -9,15 +11,16 @@ const HomePage = ({ setIsAuth }) => {
 
   return (
     <div>
-      <section className="jumbotron mt-4">
+      <TopNavBar/>
+      <div className="jumbotron mt-4">
         <div className="container">
-          <div className="app-header">
-            <h1>Synthia</h1>
-          </div>
+            <div className="app-header">
+              <h1>Synthia</h1>
+            </div>
           <h2>Prepare for Your Interviews with AI Interviewer</h2>
           <button className="button" onClick={handleRedirect}>Try Demo!</button>
         </div>
-      </section>
+      </div>
 
       <section className="container mt-3 mb-2">
         <h3 className="section-header">Why Choose AI Interviewer?</h3>

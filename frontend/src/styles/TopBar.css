@@ -1,0 +1,37 @@
+.top-nav-bar {
+    background-color: #f2f2f2;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-link-item {
+    padding: 0 10px;
+  }
+  
+  .nav-link-item a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .logo-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-image {
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain the aspect ratio */
+  }
+  
