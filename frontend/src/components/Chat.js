@@ -15,6 +15,8 @@ const Chat = ({ room }) => {
   const [isCameraStarted, setIsCameraStarted] = useState(false);
   const [isCameraStopped, setIsCameraStopped] = useState(true);
   const [videoStream, setVideoStream] = useState(null);
+  const [emotionData, setEmotionData] = useState([]);
+
   const {
     error,
     interimResult,
@@ -29,26 +31,53 @@ const Chat = ({ room }) => {
 
   const handleSubmit = async (concatenatedResults) => {
     try {
-      const response = await axios.post('/process-string', { data: concatenatedResults });
-      console.log(response.data);  // Handle the response from the server
+      console.log(concatenatedResults)
+      // let data = {data: concatenatedResults}
+      const jsonData = JSON.stringify({ data: concatenatedResults });
+      console.log(jsonData)
+      const response = await axios.post('http://127.0.0.1:5000/process-string', jsonData, { headers: { 'Content-Type': 'application/json' } });
+      // console.log(response.data)
+      for(let i = 0; i < response.data["emotions"].length; i++){
+        // console.log(response.data["emotions"][i].name, response.data["emotions"][i].score)
+        // add another variable to store at random bg-success, bg-danger, bg-warning, bg-info and convert response.data["emotions"][i].score ro integer
+        response.data["emotions"][i].score = Math.round(response.data["emotions"][i].score * 100)
+      }
+      // console.log(response)
+
+      setEmotionData(response.data);
+      localStorage.setItem('emotionData', JSON.stringify(emotionData["emotions"]));
+      // if ('speechSynthesis' in window && emotionData["chat-gpt"] != null) {
+      //   const speechSynthesis = window.speechSynthesis;
+      //   const utterance = new SpeechSynthesisUtterance(emotionData["chat-gpt"]);
+      //   speechSynthesis.speak(utterance);
+      // } else {
+      //   console.log('Text-to-speech is not supported in this browser.');
+      // }
+      if(emotionData["chat-gpt"] != null){
+        // responsiveVoice.speak(emotionData["chat-gpt"]);
+        const speechSynthesis = window.speechSynthesis;
+        console.log(emotionData["chat-gpt"])
+        const speechText = new SpeechSynthesisUtterance(emotionData["chat-gpt"]);
+        speechSynthesis.speak(speechText);
+      }
     } catch (error) {
+      console.log("hello world")
       console.error(error);
     }
+
   };
 
-  useEffect(() => {
-    let concatenatedResults = ""; // Initialize an empty string to hold the concatenated results
-    results.forEach((result) => {
-      concatenatedResults += `${result.transcript}. `; // Concatenate the `transcript` property
-    });
-    handleSubmit(concatenatedResults);
-    console.log(concatenatedResults);
-  }, [isRecording]);
 
   const videoRef = useRef();
 
   const handleMicrophoneClick = () => {
     setIsMicrophonePressed(!isMicrophonePressed);
+    if(!isRecording){
+      startSpeechToText();
+    }
+    else{
+      stopSpeechToText();
+    }
   };
 
   const handleStartCameraClick = () => {
@@ -93,6 +122,20 @@ const Chat = ({ room }) => {
     }
   }, [videoStream]);
 
+  useEffect(() => {
+    let concatenatedResults = ""; // Initialize an empty string to hold the concatenated results
+    results.forEach((result) => {
+      concatenatedResults += `${result.transcript}. `; // Concatenate the `transcript` property
+    });
+    handleSubmit(concatenatedResults);
+    // console.log(concatenatedResults);
+  }, [isRecording]);
+
+  if(error){
+    console.log(error);
+    return (<p>error: {error}</p>);
+  }
+
   return (
     <div>
       <TopNavBar />
@@ -101,10 +144,7 @@ const Chat = ({ room }) => {
           <div className="col-3">
             <div className="card bg-light p-3 h-100">
               <div className="scrollable-text-left">
-                <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam id ultricies felis. Vestibulum auctor mattis pellentesque. Aenean at varius leo. Donec dui nisi, tincidunt nec pellentesque ac, faucibus eget justo. Morbi luctus tortor ac purus fermentum bibendum. Quisque maximus auctor enim finibus maximus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed ultricies lectus malesuada augue faucibus, faucibus laoreet lectus suscipit. Ut ac sem semper, commodo nunc at, porttitor risus.
-                </p>
-                <p>Morbi dignissim mi at ipsum sodales, nec varius metus luctus. Fusce egestas sed nisl sed molestie. Cras mattis, elit id eleifend semper, orci enim suscipit nisl, sit amet imperdiet enim neque eu quam. Donec ornare volutpat lobortis. Etiam ac euismod nulla. Vestibulum quis congue velit. Ut non molestie orci, ullamcorper auctor orci. Curabitur fringilla ante ut orci volutpat suscipit. Donec consectetur pretium felis a rhoncus. Curabitur pulvinar arcu lacus, id pellentesque lorem tempus nec.
-                </p>
+                <p className="card-text">{emotionData["chat-gpt"]}</p>
               </div>
             </div>
           </div>
@@ -127,9 +167,9 @@ const Chat = ({ room }) => {
                     <p className="card-text"></p>
                     <ul>
                       {results.map((result) => (
-                        <li key={result.timestamp}>{result.transcript}</li>
+                        <p key={result.timestamp}>{result.transcript}</p>
                       ))}
-                      {interimResult && <li>{interimResult}</li>}
+                      {interimResult && <p>{interimResult}</p>}
                     </ul>
                   </div>
                 </div>
