@@ -32,6 +32,7 @@ npm install
 # Install python packages for backend
 cd ../backend
 pip install -r requirements.txt
+```
 
 ## Usage
 
