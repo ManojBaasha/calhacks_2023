@@ -64,42 +64,9 @@ export const Auth = ({ setIsAuth }) => {
             </ul>
           </div>
         </div>
-
+        
       </section>
     </div>
   );
 };
 
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // height: '45vh',
-  },
-  Button: {
-    marginTop: '20px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    backgroundColor: 'tomato',  // Change the background color to red
-    color: 'white',         // Change the text color to white
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  StartText: {
-    textAlign: 'center',
-    fontSize: '50px',
-    fontFamily: 'abel',
-    borderRadius: '5px',
-  },
-  Text: {
-    textAlign: 'center',
-    color: 'black',
-  },
-  Genie: {
-    width: '50%',
-    height: 'auto',
-  },
-};

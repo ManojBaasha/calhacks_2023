@@ -2,15 +2,62 @@ import React, { useState, useEffect, useRef } from "react";
 import "../styles/Chat.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 // const { Configuration, OpenAIApi } = require("openai");
 
 export const Chat = ({ room }) => {
-  const [isPressed, setIsPressed] = useState(false);
+  const [isMicrophonePressed, setIsMicrophonePressed] = useState(false);
+  const [isCameraStarted, setIsCameraStarted] = useState(false);
+  const [isCameraStopped, setIsCameraStopped] = useState(true);
+  const [videoStream, setVideoStream] = useState(null);
 
-  const handleClick = () => {
-    setIsPressed(!isPressed);
+
+  const videoRef = useRef();
+
+  const handleMicrophoneClick = () => {
+    setIsMicrophonePressed(!isMicrophonePressed);
   };
+
+  const handleStartCameraClick = () => {
+    setIsCameraStarted(true);
+    setIsCameraStopped(false);
+  };
+
+  const handleStopCameraClick = () => {
+    setIsCameraStarted(false);
+    setIsCameraStopped(true);
+  };
+
+
+  useEffect(() => {
+    const getVideoStream = async () => {
+      try {
+        if (isCameraStarted) {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setVideoStream(stream);
+        } else if (isCameraStopped) {
+          videoStream.getTracks().forEach((track) => track.stop());
+          setVideoStream(null);
+        }
+      } catch (error) {
+        console.error("Error accessing webcam:", error);
+      }
+    };
+
+    getVideoStream();
+
+    return () => {
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [isCameraStarted, isCameraStopped]);
+
+
+  useEffect(() => {
+    if (videoStream && videoRef.current && !videoRef.current.srcObject) {
+      videoRef.current.srcObject = videoStream;
+    }
+  }, [videoStream]);
 
   return (
     <div className="container-fluid vh-100 d-flex flex-column p-3">
@@ -31,8 +78,8 @@ export const Chat = ({ room }) => {
               <img className="half-card-image" src={require('../assets/profilePicture.jpg')} alt="Profile Picture" />
             </div>
             <div className="d-flex align-items-center">
-              <button className="btn" onClick={handleClick}>
-                {isPressed ? (
+              <button className="btn" onClick={handleMicrophoneClick}>
+                {isMicrophonePressed ? (
                   <img src={require('../assets/redMicrophone.png')} alt="Red Microphone" style={{ width: '70%', height: '70%' }} />
                 ) : (
                   <img src={require('../assets/blackMicrophone.png')} alt="Black Microphone" style={{ width: '70%', height: '70%' }} />
@@ -51,29 +98,39 @@ export const Chat = ({ room }) => {
             <div>
               <h6>Confidence</h6>
               <div className="progress mb-3">
-                <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{ width: '25%' }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div className="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style={{ width: '25%' }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                   <strong style={{ color: '#fff' }}>25%</strong>
                 </div>
               </div>
               <h6>Enthusiasm</h6>
               <div className="progress mb-2">
-                <div className="progress-bar progress-bar-striped bg-info" role="progressbar" style={{ width: '50%' }} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                <div className="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style={{ width: '50%' }} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
                   <strong style={{ color: '#fff' }}>55%</strong>
                 </div>
               </div>
               <h6>Positivity</h6>
               <div className="progress mb-2">
-                <div className="progress-bar progress-bar-striped bg-warning" role="progressbar" style={{ width: '75%' }} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div className="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style={{ width: '75%' }} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                   <strong style={{ color: '#fff' }}>75%</strong>
                 </div>
               </div>
               <h6>Professionalism</h6>
               <div className="progress mb-2">
-                <div className="progress-bar progress-bar-striped bg-danger" role="progressbar" style={{ width: '100%' }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div className="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style={{ width: '100%' }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
                   <strong style={{ color: '#fff' }}>100%</strong>
                 </div>
               </div>
             </div>
+            {isCameraStarted && (
+              <div className="video-container">
+                {videoStream && <video ref={videoRef} autoPlay muted playsInline width="100%" height="auto" style={{ objectFit: 'cover' }} />}
+              </div>
+            )}
+            {!isCameraStarted && (
+              <div className="not-started-card">
+                <h5 className="card-title text-center word-wrap">Camera not started</h5>
+              </div>
+            )}
           </div>
         </div>
 
@@ -83,22 +140,27 @@ export const Chat = ({ room }) => {
 
           <div className="card bg-light p-3 h-100">
 
-            <div className="bottom-box d-flex justify-content-between p-1 ">
+            <div className="bottom-box d-flex justify-content-between p-1">
               <div className="d-flex justify-content-between">
                 <div><a className="btn btn-secondary" href="#" role="button">&lt;&lt; Previous Question</a></div>
                 <div className="btn-margin-left"><a className="btn btn-secondary" href="#" role="button" >Next Question &gt;&gt;</a></div>
               </div>
-              <div>
+              {/* Uncomment if we want to readd middle buttons */}
+              {/* <div>
                 <a className="btn btn-secondary" href="#" role="button">Repeat Response</a>
               </div>
               <div>
                 <a className="btn btn-secondary" href="#" role="button">Return Home</a>
-              </div>
-              <div>
-                <a className="btn btn-secondary" href="#" role="button">Blank 1</a>
-              </div>
-              <div>
-                <a className="btn btn-secondary" href="#" role="button">Blank 2</a>
+              </div> */}
+              <div className="d-flex justify-content-between">
+                <div>
+                  <button className="btn btn-secondary" onClick={handleStartCameraClick} disabled={isCameraStarted}>
+                    {isCameraStarted ? "Camera Started" : "Start Camera"}
+                  </button>
+                </div>
+                <div className="btn-margin-left"><button className="btn btn-secondary" onClick={handleStopCameraClick} disabled={isCameraStopped}>
+                  {isCameraStopped ? "Camera Stopped" : "Stop Camera"}
+                </button></div>
               </div>
             </div>
           </div>
