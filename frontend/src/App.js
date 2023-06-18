@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Chat } from "./components/Chat";
+import { Auth } from "./components/Auth.js";
+import { AppWrapper } from "./components/AppWrapper";
+import "./App.css";
 
-function App() {
+
+function ChatApp() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [isInChat, setIsInChat] = useState(null);
+  const [room, setRoom] = useState("");
+
+  if (!isAuth) {
+    return (
+      <AppWrapper
+        isAuth={isAuth}
+        setIsAuth={setIsAuth}
+        setIsInChat={setIsInChat}
+      >
+        <Auth setIsAuth={setIsAuth} />
+      </AppWrapper>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Chat room="interview AI" />
   );
 }
 
-export default App;
+const styles = {
+  button : {
+    backgroundColor: 'tomato',
+    color: 'white',         // Change the text color to white
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+};
+export default ChatApp;

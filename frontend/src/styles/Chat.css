@@ -1,0 +1,62 @@
+.image-container {
+    height: 70%;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.half-card-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.scrollable-text-inside {
+    height: 100px;
+    width: 100%;
+    max-width: 550px;
+    overflow-y: auto;
+}
+
+.scrollable-text-left {
+    height: 570px;
+    width: 320px;
+    max-width: 100%;
+    overflow-y: auto;
+}
+
+.bottom-box {
+    height: 50px;
+    width: 1450px;
+    max-width: 100%;
+    overflow-y: auto;
+}
+
+.btn-margin-left {
+    margin-left: 10px;
+}
+
+.video-container {
+    margin-top: 50px;
+}
+
+.not-started-card {
+    height: 240px;
+    background: #888888;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.full-width-button {
+    width: 100%;
+}
+
+
+
