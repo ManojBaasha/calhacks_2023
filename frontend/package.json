@@ -37,5 +37,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "axios": "^1.4.0",
+    "react-hook-speech-to-text": "^0.8.0",
+    "react-router-dom": "^6.13.0"
   }
 }
