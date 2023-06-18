@@ -52,7 +52,7 @@ python app.py
 
 This project uses following APIs:
 
-1. [OpenAI API](https://openai.com/research/](https://openai.com/blog/openai-api) - Used for AI generated responses.
+1. [OpenAI API](https://openai.com/blog/openai-api) - Used for AI generated responses.
 2. [Whipsir API](https://developers.whispir.com/bc98e4074ef97-about-the-whispir-platform-api) - Used for speech to text conversion.
 3. [HumeAI API](https://docs.hume.ai/) - Used for emotion analysis.
 
