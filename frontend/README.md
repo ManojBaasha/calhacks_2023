@@ -1,70 +1,234 @@
-# Getting Started with Create React App
+import React, { useState, useEffect, useRef } from "react";
+import EmotionBars from "./EmotionBars";
+import "../styles/Chat.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import useSpeechToText from 'react-hook-speech-to-text';
+import axios from 'axios';
+import TopNavBar from "./TopBar";
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+//This is the product side of the web app
+// const { Configuration, OpenAIApi } = require("openai");
 
-## Available Scripts
+const Chat = ({ room }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isMicrophonePressed, setIsMicrophonePressed] = useState(false);
+  const [isCameraStarted, setIsCameraStarted] = useState(false);
+  const [isCameraStopped, setIsCameraStopped] = useState(true);
+  const [videoStream, setVideoStream] = useState(null);
+  const [emotionData, setEmotionData] = useState([]);
 
-In the project directory, you can run:
+  const {
+    error,
+    interimResult,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+  } = useSpeechToText({
+    continuous: true,
+    useLegacyResults: false
+  });
 
-### `npm start`
+  const handleSubmit = async (concatenatedResults) => {
+    try {
+      console.log(concatenatedResults)
+      // let data = {data: concatenatedResults}
+      const jsonData = JSON.stringify({ data: concatenatedResults });
+      console.log(jsonData)
+      const response = await axios.post('http://127.0.0.1:5000/process-string', jsonData, { headers: { 'Content-Type': 'application/json' } });
+      // console.log(response.data)
+      for(let i = 0; i < response.data["emotions"].length; i++){
+        // console.log(response.data["emotions"][i].name, response.data["emotions"][i].score)
+        // add another variable to store at random bg-success, bg-danger, bg-warning, bg-info and convert response.data["emotions"][i].score ro integer
+        response.data["emotions"][i].score = Math.round(response.data["emotions"][i].score * 100)
+      }
+      // console.log(response)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+      setEmotionData(response.data);
+      localStorage.setItem('emotionData', JSON.stringify(emotionData["emotions"]));
+      // if ('speechSynthesis' in window && emotionData["chat-gpt"] != null) {
+      //   const speechSynthesis = window.speechSynthesis;
+      //   const utterance = new SpeechSynthesisUtterance(emotionData["chat-gpt"]);
+      //   speechSynthesis.speak(utterance);
+      // } else {
+      //   console.log('Text-to-speech is not supported in this browser.');
+      // }
+      if(emotionData["chat-gpt"] != null){
+        // responsiveVoice.speak(emotionData["chat-gpt"]);
+        const speechSynthesis = window.speechSynthesis;
+        console.log(emotionData["chat-gpt"])
+        const speechText = new SpeechSynthesisUtterance(emotionData["chat-gpt"]);
+        speechSynthesis.speak(speechText);
+      }
+    } catch (error) {
+      console.log("hello world")
+      console.error(error);
+    }
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  };
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  const videoRef = useRef();
 
-### `npm run build`
+  const handleMicrophoneClick = () => {
+    setIsMicrophonePressed(!isMicrophonePressed);
+    if(!isRecording){
+      startSpeechToText();
+    }
+    else{
+      stopSpeechToText();
+    }
+  };
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  const handleStartCameraClick = () => {
+    setIsCameraStarted(true);
+    setIsCameraStopped(false);
+  };
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  const handleStopCameraClick = () => {
+    setIsCameraStarted(false);
+    setIsCameraStopped(true);
+  };
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+  useEffect(() => {
+    const getVideoStream = async () => {
+      try {
+        if (isCameraStarted) {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          setVideoStream(stream);
+        } else if (isCameraStopped) {
+          videoStream.getTracks().forEach((track) => track.stop());
+          setVideoStream(null);
+        }
+      } catch (error) {
+        console.error("Error accessing webcam:", error);
+      }
+    };
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    getVideoStream();
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    return () => {
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [isCameraStarted, isCameraStopped]);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  useEffect(() => {
+    if (videoStream && videoRef.current && !videoRef.current.srcObject) {
+      videoRef.current.srcObject = videoStream;
+    }
+  }, [videoStream]);
 
-## Learn More
+  useEffect(() => {
+    let concatenatedResults = ""; // Initialize an empty string to hold the concatenated results
+    results.forEach((result) => {
+      concatenatedResults += `${result.transcript}. `; // Concatenate the `transcript` property
+    });
+    handleSubmit(concatenatedResults);
+    // console.log(concatenatedResults);
+  }, [isRecording]);
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  if(error){
+    console.log(error);
+    return (<p>error: {error}</p>);
+  }
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  return (
+    <div>
+      <TopNavBar />
+      <div className="container-fluid vh-100 d-flex flex-column p-3">
+        <div className="row flex-grow-1 mb-3">
+          <div className="col-3">
+            <div className="card bg-light p-3 h-100">
+              <div className="scrollable-text-left">
+                <p className="card-text">{emotionData["chat-gpt"]}</p>
+              </div>
+            </div>
+          </div>
 
-### Code Splitting
+          <div className="col-6">
+            <div className="card bg-white d-flex flex-column align-items-center justify-content-start p-3 h-100">
+              <div className="image-container">
+                <img className="half-card-image" src={require('../assets/profilePicture2.jpeg')} alt="Profile Picture" />
+              </div>
+              <div className="d-flex align-items-center">
+                <button className="btn" onClick={handleMicrophoneClick}>
+                  {isMicrophonePressed ? (
+                    <img src={require('../assets/redMicrophone.png')} alt="Red Microphone" style={{ width: '70%', height: '70%' }} />
+                  ) : (
+                    <img src={require('../assets/blackMicrophone.png')} alt="Black Microphone" style={{ width: '70%', height: '70%' }} />
+                  )}
+                </button>
+                <div className="card bg-light p-3">
+                  <div className="scrollable-text-inside">
+                    <p className="card-text"></p>
+                    <ul>
+                      {results.map((result) => (
+                        <p key={result.timestamp}>{result.transcript}</p>
+                      ))}
+                      {interimResult && <p>{interimResult}</p>}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+          <div className="col-3">
+            <div className="card bg-light p-3 h-100">
+              <EmotionBars /> {/*parameter is emotions from app.py*/}
+              {isCameraStarted && (
+                <div className="video-container">
+                  {videoStream && <video ref={videoRef} autoPlay muted playsInline width="100%" height="auto" style={{ objectFit: 'cover' }} />}
+                </div>
+              )}
+              {!isCameraStarted && (
+                <div className="not-started-card">
+                  <h5 className="card-title text-center word-wrap">Camera not started</h5>
+                </div>
+              )}
+            </div>
+          </div>
 
-### Analyzing the Bundle Size
+        </div>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+        <div className="row flex-grow-4 mt-3 pb-3">
+          <div className="col">
+            <div className="card bg-light p-3 h-100">
+              <div className="bottom-box d-flex justify-content-between p-1">
+                <div className="d-flex justify-content-between">
+                  <div><a className="btn btn-secondary" href="#" role="button">&lt;&lt; Previous Question</a></div>
+                  <div className="btn-margin-left"><a className="btn btn-secondary" href="#" role="button">Next Question &gt;&gt;</a></div>
+                </div>
+                {/* Uncomment if we want to readd middle buttons */}
+                {/* <div>
+                <a className="btn btn-secondary" href="#" role="button">Repeat Response</a>
+              </div>
+              <div>
+                <a className="btn btn-secondary" href="#" role="button">Return Home</a>
+              </div> */}
+                <div className="d-flex justify-content-between">
+                  <div>
+                    <button className="btn btn-secondary" onClick={handleStartCameraClick} disabled={isCameraStarted}>
+                      {isCameraStarted ? "Camera Started" : "Start Camera"}
+                    </button>
+                  </div>
+                  <div className="btn-margin-left">
+                    <button className="btn btn-secondary" onClick={handleStopCameraClick} disabled={isCameraStopped}>
+                      {isCameraStopped ? "Camera Stopped" : "Stop Camera"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default Chat;

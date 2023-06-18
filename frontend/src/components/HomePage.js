@@ -2,7 +2,6 @@ import "../styles/HomePage.css";
 import FeaturesSection from "./FeatureSection";
 import CardSection from "./CardSection";
 import TopNavBar from "./TopBar";
-import synthiaLogo from '../assets/synthiaLogo.png';
 
 const HomePage = ({ setIsAuth }) => {
   const handleRedirect = () => {

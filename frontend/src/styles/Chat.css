@@ -31,3 +31,8 @@
     width: 1450px;
     overflow-y: auto; 
 }
+
+.custom-card-text {
+    text-align: left;
+  }
+  
