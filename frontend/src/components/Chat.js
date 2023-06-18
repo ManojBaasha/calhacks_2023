@@ -67,7 +67,7 @@ const Chat = ({ room }) => {
         <div className="col-6">
           <div className="card bg-white d-flex flex-column align-items-center justify-content-start p-3 h-100">
             <div className="image-container">
-              <img className="half-card-image" src={require('../assets/profilePicture.jpg')} alt="Profile Picture" />
+              <img className="half-card-image" src={require('../assets/profilePicture2.jpeg')} alt="Profile Picture" />
             </div>
             <div className="d-flex align-items-center">
               <button className="btn" onClick={handleClick}>

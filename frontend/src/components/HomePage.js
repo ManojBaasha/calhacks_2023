@@ -3,7 +3,7 @@ import FeaturesSection from "./FeatureSection";
 import CardSection from "./CardSection";
 
 const HomePage = ({ setIsAuth }) => {
-  const signInWithGoogle = () => {
+  const handleRedirect = () => {
     window.location.href = '/chat';
   };
 
@@ -15,7 +15,7 @@ const HomePage = ({ setIsAuth }) => {
             <h1>Synthia</h1>
           </div>
           <h2>Prepare for Your Interviews with AI Interviewer</h2>
-          <button className="button" onClick={signInWithGoogle}>Begin your next interview</button>
+          <button className="button" onClick={handleRedirect}>Try Demo!</button>
         </div>
       </section>
 
