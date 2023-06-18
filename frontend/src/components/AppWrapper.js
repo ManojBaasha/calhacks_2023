@@ -7,10 +7,6 @@ export const AppWrapper = ({ children, isAuth, setIsAuth, setIsInChat }) => {
 
   return (
     <div className="App">
-      <div className="app-header">
-        <h1 style={styles.header}> Interview AI </h1>
-      </div>
-
       <div className="app-container">{children}</div>
       {isAuth && (
         <div className="sign-out">
@@ -22,7 +18,7 @@ export const AppWrapper = ({ children, isAuth, setIsAuth, setIsInChat }) => {
 };
 
 const styles = {
-  header : {
+  header: {
     color: 'midnightblue',         // Change the text color to white
   },
 };

@@ -1,9 +1,4 @@
 import "../styles/Auth.css";
-// import Genie from './../assets/WiseGenie_Genie.png';
-// import manoj from './../assets/me.png';
-// import shubox from './../assets/me2.png';
-// import { QualtricsAPI } from 'qualtrics-api;
-
 
 export const Auth = ({ setIsAuth }) => {
   const signInWithGoogle = async () => {
@@ -16,33 +11,62 @@ export const Auth = ({ setIsAuth }) => {
 
   return (
     <div>
-      <div className="container">
-        {/* <img style={styles.Genie} src={Genie} alt="Genie" /> */}
-        <text className="StartText"> CalHacks 2023</text>
-        <button style={styles.Button} onClick={signInWithGoogle}> Start Here </button>
-        <br />
-        <text style={styles.Text}> Scroll down to learn more! </text>
-      </div>
-      <div className="bigbox">
-        {/* add the first box */}
-        <div className="box1">
-          <h3> Bla bla bla</h3>
-          <p> Our project WiseGenie centers around exploring the implementation of different AI-driven learning methods and identifying effective speed learning strategies for knowledge acquisition with the help of open-ai.  With the increasing integration of AI into every digital platform that we use, it can get repetitive to see chatbots that can do anything and everything. But WiseGenie focuses on exploring the already known faster AI-driven forms of learning by collaborating with open-ai. We made our exploration interactable in the form of a website structured and styled with React (A combination of Javascript, HTML and CSS)! </p>
+      <section className="jumbotron mt-4">
+        <div className="container">
+          <div className="app-header">
+            <h1>Interview AI</h1>
+          </div>
+          <h2>Prepare for Your Interview with AI Interviewer</h2>
+          <button className="button" onClick={signInWithGoogle}>Begin your next interview</button>
+        </div>
+      </section>
 
-          <p>
-            We explore the topics of how AI is revolutionizing our everyday lives in the educational field. With the premium access to GPT-4 on the rise, individuals do not need to think or perform easy calculations anymore! With its immense potential, AI is reshaping the educational field, offering innovative solutions and paving the way for personalized, efficient, and engaging learning experiences. So much that the role of teachers and tutors is being questioned! These AI-powered learning strategies carry the capability of answering questions, summarizing content, providing examples and solutions. Education powered by AI will be transforming how we learn in the near future. We chose to explore training open-ai to summarize content and ask questions based on content for a faster and more radical way of learning! </p>
+      <section className="container mt-3 mb-2">
+        <h3 className="section-header">Why Choose AI Interviewer?</h3>
+        <div className="row">
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Enhance Your Skills</h5>
+                <p className="card-text">Practice answering interview questions and improve your communication and problem-solving abilities.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Gain Confidence</h5>
+                <p className="card-text">Boost your confidence by familiarizing yourself with interview scenarios and receiving personalized feedback.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Save Time</h5>
+                <p className="card-text">Efficiently prepare for interviews without the need for scheduling or coordinating with others.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        {/* add the second box */}
-        <div className="box2">
-          <h3> Our Mission </h3>
-          <p> WiseGenie is a creative AI-driven learning tool for the target audience being students of any education level. It is often found that students feel overwhelmed and unmotivated to catch up on boring lectures and do a gazillion practice questions. Say goodbye to boring and tedious old learning methods that leave you drained. We introduce you to WiseGenie. WiseGenie is here to transform your educational journey into an exciting adventure. Say hello to easy interactive gamified learning methods that are effective and enjoyable.</p>
-          <p>
-            WiseGenie is a website platform where students can engage with the study tools built by training open-ai! The study strategies that we trained our open-ai models focus on helping students summarize information, and ask questions from the material sent to the ai. All of these simplified features make it easy, fast and accessible for students to learn in one place, and motivates them to actually finish work!
-          </p>
+        <div class="mt-4">
+          <div class="section-description">
+            <p>AI Interviewer is an advanced artificial intelligence system designed to help you prepare for interviews effectively. It simulates real interview scenarios and provides valuable feedback and suggestions to improve your performance.</p>
+          </div>
+          <div class="section-features section-header mb-4">
+            <h3>Key Features:</h3>
+            <ul class="list-group">
+              <li class="list-group-item">Question Simulation: AI Interviewer asks a series of interview questions to simulate real interview scenarios.</li>
+              <li class="list-group-item">Follow-up Questions: It intelligently generates follow-up questions based on your responses, enhancing the depth of the interview experience.</li>
+              <li class="list-group-item">Emotion Analysis: The AI system can analyze your facial expressions and tone of voice to gauge your emotions during the interview.</li>
+              <li class="list-group-item">Performance Evaluation: It assesses the quality of your responses, taking into account both the content and the delivery of your answers.</li>
+              <li class="list-group-item">Feedback and Suggestions: AI Interviewer provides personalized feedback and suggestions to help you improve your interview skills and increase your chances of success.</li>
+            </ul>
+          </div>
         </div>
-      </div>
+
+      </section>
     </div>
-
   );
 };
 
