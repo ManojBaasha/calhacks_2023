@@ -36,27 +36,7 @@
     overflow-y: auto;
 }
 
-.btn-margin-left {
-    margin-left: 10px;
-}
-
-.video-container {
-    margin-top: 50px;
-}
-
-.not-started-card {
-    height: 240px;
-    background: #888888;
-    color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50px;
-}
-
-.full-width-button {
-    width: 100%;
-}
-
-
-
+.custom-card-text {
+    text-align: left;
+  }
+  
